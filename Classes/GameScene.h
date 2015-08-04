@@ -19,6 +19,9 @@ class GameScene : public cocos2d::LayerColor
 
         void tick() { ++tickCounter; }
 
+        void CheckCollision(); // Because chipmunk is broken beyond belief
+        void CheckPosition();
+
         void CreateBackground();
         void ScrollBackground();
 

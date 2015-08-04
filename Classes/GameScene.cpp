@@ -38,6 +38,8 @@ void GameScene::update(float dt)
     ScrollBackground();
     GenerateObstacles();
     ScrollObstacles();
+    CheckCollision();
+    CheckPosition();
     CheckPlayerJump();
 }
 
@@ -53,6 +55,71 @@ bool GameScene::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 {
     PlayerJump();
     return true;
+}
+
+void GameScene::CheckCollision()
+{
+    bool GameOver = false;
+    float playerX = playerSprite->getPositionX() + playerSprite->getBoundingBox().size.width / 2;
+    float playerTopY = playerSprite->getPositionY() + playerSprite->getBoundingBox().size.width / 2;
+    float playerBottomY = playerSprite->getPositionY() - playerSprite->getBoundingBox().size.width / 2;
+
+    if (playerTopY >= GAME_HEIGHT)
+    {
+        playerBody->setGravityEnable(true);
+        playerBody->setVelocity(Vec2(0, 20.f));
+        playerJumping = false;
+    }
+
+    if (playerBottomY <= groundY)
+        GameOver = true;
+
+    for (ObstacleVector::iterator itr = obstacles.begin(); itr != obstacles.end(); ++itr)
+    {
+        Obstacle* o = (*itr);
+
+        float pipeUpperLeftSide = o->pipeUpper->getPositionX();
+        float pipeUpperRightSide = o->pipeUpper->getPositionX() + o->pipeUpper->getBoundingBox().size.width;
+        float pipeUpperBottomSide = o->pipeUpper->getPositionY();
+        float pipeUpperTopSide = o->pipeUpper->getPositionY() + o->pipeUpper->getBoundingBox().size.height;
+        if ((playerX >= pipeUpperLeftSide && playerX <= pipeUpperRightSide) &&
+            (playerTopY >= pipeUpperBottomSide && playerBottomY <= pipeUpperTopSide))
+            GameOver = true;
+
+        float pipeUpperBodyLeftSide = o->pipeUpperBody->getPositionX();
+        float pipeUpperBodyRightSide = o->pipeUpperBody->getPositionX() + o->pipeUpperBody->getBoundingBox().size.width;
+        float pipeUpperBodyBottomSide = o->pipeUpperBody->getPositionY();
+        float pipeUpperBodyTopSide = o->pipeUpperBody->getPositionY() + o->pipeUpperBody->getBoundingBox().size.height;
+        if ((playerX >= pipeUpperBodyLeftSide && playerX <= pipeUpperBodyRightSide) &&
+            (playerTopY >= pipeUpperBodyBottomSide && playerBottomY <= pipeUpperBodyTopSide))
+            GameOver = true;
+
+        float pipeLowerLeftSide = o->pipeLower->getPositionX();
+        float pipeLowerRightSide = o->pipeLower->getPositionX() + o->pipeLower->getBoundingBox().size.width;
+        float pipeLowerBottomSide = o->pipeLower->getPositionY();
+        float pipeLowerTopSide = o->pipeLower->getPositionY() + o->pipeLower->getBoundingBox().size.height;
+        if ((playerX >= pipeLowerLeftSide && playerX <= pipeLowerRightSide) &&
+            (playerTopY >= pipeLowerBottomSide && playerBottomY <= pipeLowerTopSide))
+            GameOver = true;
+
+        float pipeLowerBodyLeftSide = o->pipeLowerBody->getPositionX();
+        float pipeLowerBodyRightSide = o->pipeLowerBody->getPositionX() + o->pipeLowerBody->getBoundingBox().size.width;
+        float pipeLowerBodyBottomSide = o->pipeLowerBody->getPositionY();
+        float pipeLowerBodyTopSide = o->pipeLowerBody->getPositionY() + o->pipeLowerBody->getBoundingBox().size.height;
+        if ((playerX >= pipeLowerBodyLeftSide && playerX <= pipeLowerBodyRightSide) &&
+            (playerTopY >= pipeLowerBodyBottomSide && playerBottomY <= pipeLowerBodyTopSide))
+            GameOver = true;
+    }
+
+    if (GameOver)
+        unscheduleUpdate();
+}
+
+void GameScene::CheckPosition()
+{
+    if (Node* plNode = getChildByName("Player"))
+        if (plNode->getPositionY() - plNode->getBoundingBox().size.width / 2 <= groundY)
+            unscheduleUpdate();
 }
 
 void GameScene::CreateBackground()
