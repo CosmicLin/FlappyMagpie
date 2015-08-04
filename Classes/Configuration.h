@@ -9,6 +9,7 @@
 #define GAME_PHYSICS_SPEED 4.f
 #define GAME_PHYSICS_GRAVITY 0, -80.f // Vec2
 
+#define FONT_SIZE_GAME_OVER 72
 #define FONT_SIZE_SCORE 56
 
 #define PLAYER_ANIMATION_SPEED 12.f
@@ -26,6 +27,7 @@ enum Layer
     OBSTACLE_LAYER,
     PLAYER_LAYER,
     SCORE_LAYER,
+    TITLE_LAYER,
 };
 
 #endif // __CONFIGURATION_H__

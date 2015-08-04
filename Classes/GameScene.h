@@ -19,6 +19,12 @@ class GameScene : public cocos2d::LayerColor
 
         void tick() { ++tickCounter; }
 
+        void DisplayStartScreen();
+        void DisplayGameOverScreen();
+
+        void StarGame();
+        void EndGame();
+
         void CheckCollision(); // Because chipmunk is broken beyond belief
         void CheckPosition();
 
@@ -42,10 +48,20 @@ class GameScene : public cocos2d::LayerColor
 
         unsigned long tickCounter;
         float groundY;
+        bool gameStart;
+        bool gameRunning;
+        bool gameOver;
+
+        cocos2d::Sprite* gameTitleImage;
+        cocos2d::Sprite* startButton;
+
+        cocos2d::Label* gameOverLabel;
+        cocos2d::Sprite* playAgainButton;
 
         cocos2d::Sprite* bgScrollPrimary;
         cocos2d::Sprite* bgScrollSecondary;
         cocos2d::Sprite* bgStatic;
+        bool scrollBackground;
 
         cocos2d::Sprite* playerSprite;
         cocos2d::PhysicsBody* playerBody;
@@ -56,6 +72,7 @@ class GameScene : public cocos2d::LayerColor
         unsigned long lastObstacleTime;
         typedef std::vector<Obstacle*> ObstacleVector;
         ObstacleVector obstacles;
+        bool genObstacles;
 
         unsigned long score;
         cocos2d::Label* scoreLabel;
