@@ -27,6 +27,7 @@ enum Layer
     OBSTACLE_LAYER,
     PLAYER_LAYER,
     SCORE_LAYER,
+    PAUSE_LAYER,
     TITLE_LAYER,
 };
 

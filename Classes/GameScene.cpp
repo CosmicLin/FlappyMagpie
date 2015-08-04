@@ -21,10 +21,13 @@ bool GameScene::init()
     if (!LayerColor::initWithColor(Color4B(GAME_COLOUR)))
         return false;
 
+    Director::getInstance()->stopAnimation();
+
     tickCounter = 0;
     groundY = 0;
     gameStart = true;
     gameRunning = false;
+    gamePaused = false;
     gameOver = false;
     scrollBackground = false;
     genObstacles = false;
@@ -77,9 +80,24 @@ bool GameScene::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
 
     if (gameRunning)
     {
-        PlayerJump();
-        return true;
+        if (pauseResumeButton->getBoundingBox().containsPoint(p))
+        {
+            PauseGame();
+            return true;
+        }
+        else
+        {
+            PlayerJump();
+            return true;
+        }
     }
+
+    if (gamePaused)
+        if (pauseResumeButton->getBoundingBox().containsPoint(p))
+        {
+            ResumeGame();
+            return true;
+        }
 
     if (gameOver)
         if (playAgainButton->getBoundingBox().containsPoint(p))
@@ -139,16 +157,41 @@ void GameScene::StarGame()
     CreatePlayer();
     AddPlayerToScene();
 
+    pauseResumeButton = Sprite::create("pause.png");
+    pauseResumeButton->setAnchorPoint(Vec2(0, 0));
+    pauseResumeButton->setPosition(Vec2(GAME_WIDTH * 0.10f, GAME_HEIGHT * 0.90f));
+    addChild(pauseResumeButton, PAUSE_LAYER);
+
+    Director::getInstance()->startAnimation();
     scheduleUpdate();
 }
 
 void GameScene::EndGame()
 {
+    removeChild(pauseResumeButton);
     scrollBackground = false;
     genObstacles = false;
     gameRunning = false;
     gameOver = true;
     DisplayGameOverScreen();
+}
+
+void GameScene::PauseGame()
+{
+    gameRunning = false;
+    gamePaused = true;
+    pauseResumeButton->setTexture("resume.png");
+    unscheduleUpdate();
+    Director::getInstance()->stopAnimation();
+}
+
+void GameScene::ResumeGame()
+{
+    gameRunning = true;
+    gamePaused = false;
+    pauseResumeButton->setTexture("pause.png");
+    scheduleUpdate();
+    Director::getInstance()->startAnimation();
 }
 
 void GameScene::CheckCollision()
@@ -216,7 +259,10 @@ void GameScene::CheckPosition()
 {
     if (Node* plNode = getChildByName("Player"))
         if (plNode->getPositionY() - plNode->getBoundingBox().size.width / 2 <= groundY)
+        {
             unscheduleUpdate();
+            Director::getInstance()->stopAnimation();
+        }
 }
 
 void GameScene::CreateBackground()

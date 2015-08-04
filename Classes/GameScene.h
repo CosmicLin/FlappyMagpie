@@ -24,6 +24,8 @@ class GameScene : public cocos2d::LayerColor
 
         void StarGame();
         void EndGame();
+        void PauseGame();
+        void ResumeGame();
 
         void CheckCollision(); // Because chipmunk is broken beyond belief
         void CheckPosition();
@@ -50,6 +52,7 @@ class GameScene : public cocos2d::LayerColor
         float groundY;
         bool gameStart;
         bool gameRunning;
+        bool gamePaused;
         bool gameOver;
 
         cocos2d::Sprite* gameTitleImage;
@@ -57,6 +60,8 @@ class GameScene : public cocos2d::LayerColor
 
         cocos2d::Label* gameOverLabel;
         cocos2d::Sprite* playAgainButton;
+
+        cocos2d::Sprite* pauseResumeButton;
 
         cocos2d::Sprite* bgScrollPrimary;
         cocos2d::Sprite* bgScrollSecondary;
