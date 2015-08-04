@@ -37,6 +37,9 @@ class GameScene : public cocos2d::LayerColor
         void GenerateObstacles();
         void ScrollObstacles();
 
+        void AddScoreLabel();
+        void IncrementScore();
+
         unsigned long tickCounter;
         float groundY;
 
@@ -53,6 +56,9 @@ class GameScene : public cocos2d::LayerColor
         unsigned long lastObstacleTime;
         typedef std::vector<Obstacle*> ObstacleVector;
         ObstacleVector obstacles;
+
+        unsigned long score;
+        cocos2d::Label* scoreLabel;
 };
 
 #endif // __GAME_SCENE_H__

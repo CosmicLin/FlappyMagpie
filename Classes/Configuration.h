@@ -9,6 +9,8 @@
 #define GAME_PHYSICS_SPEED 4.f
 #define GAME_PHYSICS_GRAVITY 0, -80.f // Vec2
 
+#define FONT_SIZE_SCORE 56
+
 #define PLAYER_ANIMATION_SPEED 12.f
 #define PLAYER_JUMP_HEIGHT 20.f
 #define PLAYER_JUMP_VELOCITY 0, 80.f // Vec2
@@ -23,6 +25,7 @@ enum Layer
     BG_SCROLL_LAYER,
     OBSTACLE_LAYER,
     PLAYER_LAYER,
+    SCORE_LAYER,
 };
 
 #endif // __CONFIGURATION_H__

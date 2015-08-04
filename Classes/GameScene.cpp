@@ -27,6 +27,7 @@ bool GameScene::init()
     InitListeners();
     scheduleUpdate();
     CreateBackground();
+    AddScoreLabel();
     CreatePlayer();
     AddPlayerToScene();
     return true;
@@ -41,6 +42,7 @@ void GameScene::update(float dt)
     CheckCollision();
     CheckPosition();
     CheckPlayerJump();
+    IncrementScore();
 }
 
 void GameScene::InitListeners()
@@ -302,4 +304,22 @@ void GameScene::ScrollObstacles()
 
     if (removeId)
         RemoveObstacle(removeId);
+}
+
+void GameScene::AddScoreLabel()
+{
+    scoreLabel = Label::createWithTTF("0", "font/flappyfont.ttf", FONT_SIZE_SCORE);
+    scoreLabel->enableOutline(Color4B(0, 0, 0, 255), 3);
+    scoreLabel->setAnchorPoint(Vec2(0, 0));
+    scoreLabel->setPosition(Vec2((GAME_WIDTH - FONT_SIZE_SCORE) / 2, (GAME_HEIGHT / 5) * 4));
+    addChild(scoreLabel, SCORE_LAYER);
+}
+
+void GameScene::IncrementScore()
+{
+    if ((Util::GetMSTime(tickCounter) / 1000) > score)
+    {
+        ++score;
+        scoreLabel->setString(std::to_string(score));
+    }
 }
