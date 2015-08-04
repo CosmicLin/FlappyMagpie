@@ -16,6 +16,7 @@ enum Layer
     BG_STATIC_LAYER,
     BG_SCROLL_LAYER,
     OBSTACLE_LAYER,
+    PLAYER_LAYER,
 };
 
 #endif // __CONFIGURATION_H__

@@ -22,6 +22,8 @@ bool GameScene::init()
 
     scheduleUpdate();
     CreateBackground();
+    CreatePlayer();
+    AddPlayerToScene();
     return true;
 }
 
@@ -66,6 +68,25 @@ void GameScene::ScrollBackground()
 
     if (bgScrollSecondary->getPosition().x < -bgScrollSecondary->getBoundingBox().size.width)
         bgScrollSecondary->setPosition(Vec2(bgScrollPrimary->getPosition().x + bgScrollPrimary->getBoundingBox().size.width, bgScrollSecondary->getPosition().y));
+}
+
+void GameScene::CreatePlayer()
+{
+    playerSprite = Sprite::create("bird.png");
+    playerSprite->setName("Player");
+    playerSprite->setScale(1.5f);
+    playerSprite->setAnchorPoint(Vec2(0, 0));
+    playerSprite->setPosition(Vec2(GAME_WIDTH / 4, (GAME_HEIGHT + bgScrollPrimary->getContentSize().height) / 2));
+}
+
+void GameScene::AddPlayerToScene()
+{
+    addChild(playerSprite, PLAYER_LAYER);
+}
+
+void GameScene::RemovePlayerFromScene()
+{
+    removeChild(playerSprite);
 }
 
 void GameScene::AddObstacle()

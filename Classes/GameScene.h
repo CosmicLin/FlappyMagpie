@@ -19,6 +19,10 @@ class GameScene : public cocos2d::LayerColor
         void CreateBackground();
         void ScrollBackground();
 
+        void CreatePlayer();
+        void AddPlayerToScene();
+        void RemovePlayerFromScene();
+
         void AddObstacle();
         void RemoveObstacle(unsigned long Id);
         void RemoveAllObstacles();
@@ -31,6 +35,8 @@ class GameScene : public cocos2d::LayerColor
         cocos2d::Sprite* bgScrollPrimary;
         cocos2d::Sprite* bgScrollSecondary;
         cocos2d::Sprite* bgStatic;
+
+        cocos2d::Sprite* playerSprite;
 
         unsigned long obstacleCounter;
         unsigned long lastObstacleTime;
