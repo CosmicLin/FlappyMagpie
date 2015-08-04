@@ -7,10 +7,15 @@
 #define GAME_COLOUR 0x4E, 0xC0, 0xCA, 0xFF // RGBA
 #define GAME_SCROLL_SPEED 3.f
 
+#define OBSTACLE_GAP 120.f
+#define OBSTACLE_PADDING 160.f
+#define OBSTACLE_FREQUENCY_TIME 1500
+
 enum Layer
 {
     BG_STATIC_LAYER,
     BG_SCROLL_LAYER,
+    OBSTACLE_LAYER,
 };
 
 #endif // __CONFIGURATION_H__

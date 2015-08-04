@@ -2,6 +2,7 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "Obstacle.h"
 
 class GameScene : public cocos2d::LayerColor
 {
@@ -18,12 +19,23 @@ class GameScene : public cocos2d::LayerColor
         void CreateBackground();
         void ScrollBackground();
 
+        void AddObstacle();
+        void RemoveObstacle(unsigned long Id);
+        void RemoveAllObstacles();
+        void GenerateObstacles();
+        void ScrollObstacles();
+
         unsigned long tickCounter;
         float groundY;
 
         cocos2d::Sprite* bgScrollPrimary;
         cocos2d::Sprite* bgScrollSecondary;
         cocos2d::Sprite* bgStatic;
+
+        unsigned long obstacleCounter;
+        unsigned long lastObstacleTime;
+        typedef std::vector<Obstacle*> ObstacleVector;
+        ObstacleVector obstacles;
 };
 
 #endif // __GAME_SCENE_H__
