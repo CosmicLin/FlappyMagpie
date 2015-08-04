@@ -6,7 +6,11 @@ USING_NS_CC;
 
 Scene* GameScene::createScene()
 {
-    Scene* scene = Scene::create();
+    Scene* scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setSpeed(GAME_PHYSICS_SPEED);
+    scene->getPhysicsWorld()->setGravity(Vec2(GAME_PHYSICS_GRAVITY));
+    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
     GameScene* layer = GameScene::create();
     scene->addChild(layer);
     return scene;
@@ -20,6 +24,7 @@ bool GameScene::init()
     tickCounter = 0;
     groundY = 0;
 
+    InitListeners();
     scheduleUpdate();
     CreateBackground();
     CreatePlayer();
@@ -33,6 +38,21 @@ void GameScene::update(float dt)
     ScrollBackground();
     GenerateObstacles();
     ScrollObstacles();
+    CheckPlayerJump();
+}
+
+void GameScene::InitListeners()
+{
+    EventListenerTouchOneByOne* tListener = EventListenerTouchOneByOne::create();
+    tListener->setSwallowTouches(true);
+    tListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(tListener, this);
+}
+
+bool GameScene::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
+{
+    PlayerJump();
+    return true;
 }
 
 void GameScene::CreateBackground()
@@ -77,6 +97,12 @@ void GameScene::CreatePlayer()
     playerSprite->setScale(1.5f);
     playerSprite->setAnchorPoint(Vec2(0, 0));
     playerSprite->setPosition(Vec2(GAME_WIDTH / 4, (GAME_HEIGHT + bgScrollPrimary->getContentSize().height) / 2));
+
+    playerBody = PhysicsBody::createBox(playerSprite->getBoundingBox().size); // orginal flappy bird difficulty :^)
+    playerSprite->setPhysicsBody(playerBody);
+
+    playerJumping = false;
+    JumpY = 0;
 }
 
 void GameScene::AddPlayerToScene()
@@ -87,6 +113,26 @@ void GameScene::AddPlayerToScene()
 void GameScene::RemovePlayerFromScene()
 {
     removeChild(playerSprite);
+}
+
+void GameScene::PlayerJump()
+{
+    playerJumping = true;
+    JumpY = playerSprite->getPositionY();
+    playerBody->setGravityEnable(false);
+    playerBody->setVelocity(Vec2(PLAYER_JUMP_VELOCITY));
+}
+
+void GameScene::CheckPlayerJump()
+{
+    if (playerJumping)
+    {
+        if (playerSprite->getPositionY() - JumpY > PLAYER_JUMP_HEIGHT)
+        {
+            playerBody->setGravityEnable(true);
+            playerJumping = false;
+        }
+    }
 }
 
 void GameScene::AddObstacle()

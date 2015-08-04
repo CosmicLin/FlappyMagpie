@@ -14,6 +14,9 @@ class GameScene : public cocos2d::LayerColor
         virtual bool init();
         void update(float dt);
 
+        void InitListeners();
+        bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+
         void tick() { ++tickCounter; }
 
         void CreateBackground();
@@ -22,6 +25,8 @@ class GameScene : public cocos2d::LayerColor
         void CreatePlayer();
         void AddPlayerToScene();
         void RemovePlayerFromScene();
+        void PlayerJump();
+        void CheckPlayerJump();
 
         void AddObstacle();
         void RemoveObstacle(unsigned long Id);
@@ -37,6 +42,9 @@ class GameScene : public cocos2d::LayerColor
         cocos2d::Sprite* bgStatic;
 
         cocos2d::Sprite* playerSprite;
+        cocos2d::PhysicsBody* playerBody;
+        bool playerJumping;
+        float JumpY;
 
         unsigned long obstacleCounter;
         unsigned long lastObstacleTime;
