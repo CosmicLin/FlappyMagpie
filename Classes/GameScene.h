@@ -19,6 +19,8 @@ class GameScene : public cocos2d::LayerColor
 
         void tick() { ++tickCounter; }
 
+        void CreateAuthorLabel();
+
         void DisplayStartScreen();
         void DisplayGameOverScreen();
 
@@ -54,6 +56,8 @@ class GameScene : public cocos2d::LayerColor
         bool gameRunning;
         bool gamePaused;
         bool gameOver;
+
+        cocos2d::Label* authorLabel;
 
         cocos2d::Sprite* gameTitleImage;
         cocos2d::Sprite* startButton;

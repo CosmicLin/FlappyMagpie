@@ -35,6 +35,7 @@ bool GameScene::init()
 
     CreateBackground();
 
+    CreateAuthorLabel();
     DisplayStartScreen();
     return true;
 }
@@ -107,6 +108,16 @@ bool GameScene::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event)
         }
 
     return false;
+}
+
+void GameScene::CreateAuthorLabel()
+{
+    authorLabel = Label::createWithTTF("Patrick McGrotty", "font/flappyfont.ttf", FONT_SIZE_AUTHOR);
+    authorLabel->setTextColor(Color4B(232, 228, 181, 255));
+    authorLabel->enableOutline(Color4B(194, 175, 118, 255), 2);
+    authorLabel->setAnchorPoint(Vec2(0, 0));
+    authorLabel->setPosition(Vec2((GAME_WIDTH / 2) - (authorLabel->getBoundingBox().size.width / 2), (groundY / 2) - (authorLabel->getBoundingBox().size.height / 2)));
+    addChild(authorLabel, AUTHOR_LAYER);
 }
 
 void GameScene::DisplayStartScreen()
